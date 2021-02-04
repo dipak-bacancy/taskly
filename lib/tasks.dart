@@ -112,7 +112,7 @@ class Task extends StatelessWidget {
     return AlertDialog(
       title: Text('Delete task'),
       content: Text('Are you sure, you want to delete this task?'),
-      actionsPadding: EdgeInsets.symmetric(horizontal: 50),
+      // actionsPadding: EdgeInsets.symmetric(horizontal: 50),
       actions: [
         ButtonBar(
           buttonMinWidth: 120,

@@ -52,12 +52,24 @@ class CreateProject extends StatelessWidget {
                   // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      child: Icon(Icons.done),
+                      height: 45,
+                      width: 45,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                        color: Colors.green,
+                      ),
+                      child: Icon(
+                        Icons.done,
+                        color: Colors.white,
+                      ),
                     ),
                     Text(
                       'Success',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    SizedBox(
+                      height: 5,
                     ),
                     Text('Project created successfully'),
                     RaisedButton(
@@ -155,7 +167,11 @@ class CreateProjectBody extends StatelessWidget {
                 ),
               ),
               IconButton(
-                  icon: Icon(Icons.add), color: Colors.black, onPressed: null)
+                  icon: Icon(Icons.add),
+                  color: Colors.black,
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/task');
+                  })
             ],
           ),
 

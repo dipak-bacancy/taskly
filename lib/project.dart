@@ -11,6 +11,7 @@ class Project extends StatelessWidget {
           children: <Widget>[
             // top Header
             Header(
+              // backNav: true,
               title: 'Project',
               minifab: FloatingActionButton(
                 mini: true,
@@ -27,6 +28,7 @@ class Project extends StatelessWidget {
             ),
 
             // Body
+
             ProjectBody()
           ],
         ),
@@ -195,9 +197,14 @@ class ProjectBody extends StatelessWidget {
             color: Colors.black,
           ),
 
-          ListTile(
-            title: Text('Click this task to see more details'),
-            tileColor: Colors.grey[100],
+          InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, '/task');
+            },
+            child: ListTile(
+              title: Text('Click this task to see more details'),
+              tileColor: Colors.grey[100],
+            ),
           ),
           ListTile(
             title: Text('You can add subtasks here! ✅ '),

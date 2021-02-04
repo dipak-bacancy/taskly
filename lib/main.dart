@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:taskly/home.dart';
 
-import 'layout.dart';
+import 'package:taskly/splash.dart';
+
+import 'package:taskly/tasks.dart';
+
+import 'CreateProject.dart';
+import 'Homepage.dart';
+import 'Project.dart';
+import 'TaskDetail.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,7 +16,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'taskly',
-      home: Home(),
+      initialRoute: '/splash',
+      routes: {
+        '/splash': (context) => Splash(),
+        // '/': (context) => Splash(),
+        '/': (context) => Homepage(),
+
+        '/create': (context) => CreateProject(),
+        '/project': (context) => Project(),
+        '/task-completed': (context) => TaskDetail(),
+        '/task': (context) => Task(),
+      },
     );
   }
 }
