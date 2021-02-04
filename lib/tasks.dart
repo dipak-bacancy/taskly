@@ -114,27 +114,35 @@ class Task extends StatelessWidget {
       content: Text('Are you sure, you want to delete this task?'),
       actionsPadding: EdgeInsets.symmetric(horizontal: 50),
       actions: [
-        RaisedButton(
-          onPressed: () {
-            // Respond to button press
-
-            Navigator.pop(context);
-          },
-          color: Colors.grey,
-          textColor: Colors.white,
-          child: Text('cancel'),
-        ),
-        SizedBox(
-          width: 20,
-        ),
-        RaisedButton(
-          onPressed: () {
-            // Respond to button press
-            Navigator.pop(context);
-          },
-          color: Colors.red,
-          textColor: Colors.white,
-          child: Text('Delete'),
+        ButtonBar(
+          buttonMinWidth: 120,
+          buttonHeight: 45,
+          children: [
+            RaisedButton(
+              onPressed: () {
+                // Respond to button press
+                Navigator.pop(context);
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(5.0),
+              ),
+              color: Colors.grey,
+              textColor: Colors.white,
+              child: Text('Cancel'),
+            ),
+            RaisedButton(
+              onPressed: () {
+                // Respond to button press
+                Navigator.pop(context);
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(5.0),
+              ),
+              color: Colors.red,
+              textColor: Colors.white,
+              child: Text('Delete'),
+            )
+          ],
         ),
       ],
     );
