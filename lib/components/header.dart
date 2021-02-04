@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class Header extends StatelessWidget {
   final String title;
   final Widget minifab;
-  Header({@required this.title, this.minifab});
+  final bool backNav;
+  Header({@required this.title, this.minifab, this.backNav = true});
 
   @override
   Widget build(BuildContext context) {
@@ -20,21 +21,7 @@ class Header extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextButton.icon(
-                onPressed: () {
-                  Navigator.pop(context);
-                  // Respond to button press
-                },
-                icon: Icon(
-                  Icons.chevron_left,
-                  size: 18,
-                  color: Colors.black,
-                ),
-                label: Text(
-                  'Back',
-                  style: TextStyle(color: Colors.black, fontSize: 18),
-                ),
-              ),
+              buildBackButton(context),
               Text(
                 title,
                 style: Theme.of(context).textTheme.headline3.merge(
@@ -52,5 +39,29 @@ class Header extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget buildBackButton(BuildContext context) {
+    if (backNav) {
+      return TextButton.icon(
+        onPressed: () {
+          Navigator.pop(context);
+          // Respond to button press
+        },
+        icon: Icon(
+          Icons.chevron_left,
+          size: 18,
+          color: Colors.black,
+        ),
+        label: Text(
+          'Back',
+          style: TextStyle(color: Colors.black, fontSize: 18),
+        ),
+      );
+    } else {
+      return SizedBox(
+        height: 50,
+      );
+    }
   }
 }
