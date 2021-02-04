@@ -29,6 +29,7 @@ class TaskDetail extends StatelessWidget {
                     width: 10,
                   ),
                   FloatingActionButton(
+                    heroTag: "minifab",
                     mini: true,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(16.0))),
@@ -54,6 +55,7 @@ class TaskDetail extends StatelessWidget {
             buildDeleteDialog(context);
           },
           child: Icon(Icons.delete),
+          heroTag: "delete",
           backgroundColor: Colors.red,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16.0))),

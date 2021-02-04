@@ -13,6 +13,7 @@ class Task extends StatelessWidget {
             Header(
               title: 'Task',
               minifab: FloatingActionButton(
+                heroTag: "minifab",
                 mini: true,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(16.0))),
@@ -31,6 +32,7 @@ class Task extends StatelessWidget {
           ],
         ),
         floatingActionButton: FloatingActionButton(
+          heroTag: "delete",
           onPressed: () {
             showDialog<void>(
                 context: context,

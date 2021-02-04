@@ -16,6 +16,7 @@ class Homepage extends StatelessWidget {
             backNav: false,
             title: 'Projects',
             minifab: FloatingActionButton(
+              heroTag: "gotoCreateProject",
               onPressed: () {
                 // Respond to button press
 
@@ -33,47 +34,21 @@ class Homepage extends StatelessWidget {
           // Body
 
           Expanded(
-            child: CustomScrollView(
-              slivers: [
-                SliverGrid(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 3 / 2,
-                  ),
-                  delegate: SliverChildListDelegate(
-                    [
-                      ProjectThumbnail(
-                        icon: Icon(Icons.favorite),
-                        letter: 'T',
-                        title: 'Inbox',
-                      ),
-                      ProjectThumbnail(
-                        icon: Icon(Icons.favorite),
-                        letter: 'T',
-                        title: 'Inbox',
-                      ),
-                      ProjectThumbnail(
-                        icon: Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                        ),
-                        letter: 'W',
-                        title: 'Welcome',
-                      ),
-                      ProjectThumbnail(
-                        icon: Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                        ),
-                        letter: 'W',
-                        title: 'Welcome',
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            child: GridView.builder(
+              itemCount: 4,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 3 / 2,
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                return ProjectThumbnail(
+                  icon: Icon(Icons.favorite),
+                  letter: 'T',
+                  title: 'Inbox',
+                );
+              },
             ),
-          )
+          ),
         ],
       ),
     ));

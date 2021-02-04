@@ -14,6 +14,7 @@ class Project extends StatelessWidget {
               // backNav: true,
               title: 'Project',
               minifab: FloatingActionButton(
+                heroTag: "minifab",
                 mini: true,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(16.0))),
@@ -33,6 +34,7 @@ class Project extends StatelessWidget {
           ],
         ),
         floatingActionButton: FloatingActionButton(
+          heroTag: "delete",
           onPressed: () {
             buildDeleteDialog(context);
           },
