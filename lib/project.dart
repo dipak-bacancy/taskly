@@ -32,9 +32,7 @@ class Project extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            showDialog<void>(
-                context: context,
-                builder: (context) => buildAlertDialog(context));
+            buildDeleteDialog(context);
           },
           child: Icon(Icons.delete),
           backgroundColor: Colors.red,
@@ -45,37 +43,71 @@ class Project extends StatelessWidget {
     );
   }
 
-  // delete dailog
-  AlertDialog buildAlertDialog(BuildContext context) {
-    return AlertDialog(
-      title: Text('Delete Project'),
-      content: Text('Are you sure, you want to delete “Welcome 👋” Project?'),
-      actionsPadding: EdgeInsets.symmetric(horizontal: 50),
-      actions: [
-        RaisedButton(
-          onPressed: () {
-            // Respond to button press
-
-            Navigator.pop(context);
-          },
-          color: Colors.grey,
-          textColor: Colors.white,
-          child: Text('cancel'),
-        ),
-        SizedBox(
-          width: 20,
-        ),
-        RaisedButton(
-          onPressed: () {
-            // Respond to button press
-            Navigator.pop(context);
-          },
-          color: Colors.red,
-          textColor: Colors.white,
-          child: Text('Delete'),
-        ),
-      ],
-    );
+// delete dailog
+  Future buildDeleteDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)), //this right here
+            child: Container(
+              height: 200,
+              padding: EdgeInsets.all(8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Delete Project',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+                    child: Center(
+                      child: Text(
+                        'Are you sure, you want to delete “Welcome 👋” Project?',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ),
+                  ),
+                  ButtonBar(
+                    buttonMinWidth: 120,
+                    buttonHeight: 45,
+                    children: [
+                      RaisedButton(
+                        onPressed: () {
+                          // Respond to button press
+                          Navigator.pop(context);
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(5.0),
+                        ),
+                        color: Colors.grey,
+                        textColor: Colors.white,
+                        child: Text('Cancel'),
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                          // Respond to button press
+                          Navigator.pop(context);
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(5.0),
+                        ),
+                        color: Colors.red,
+                        textColor: Colors.white,
+                        child: Text('Delete'),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
 
