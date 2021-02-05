@@ -1,11 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:taskly/model/authentication.dart';
 
 import 'components/header.dart';
+
 import 'model/project.dart';
 
 Future<List<Project>> fetchProjects(http.Client client) async {
@@ -18,8 +19,8 @@ Future<List<Project>> fetchProjects(http.Client client) async {
       'Authorization': 'Bearer $token',
     },
   );
-  print(response);
-  print(response.body);
+  // print(response);
+  // print(response.body);
 
   // Use the compute function to run parseProjects in a separate isolate.
   return compute(parseProjects, response.body);
@@ -33,48 +34,66 @@ List<Project> parseProjects(String responseBody) {
 }
 
 class Homepage extends StatelessWidget {
-  const Homepage({Key key}) : super(key: key);
+  // const Homepage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      body: Column(
-        children: [
-          // Header
-          Header(
-            backNav: false,
-            title: 'Projects',
-            minifab: FloatingActionButton(
-              heroTag: "gotoCreateProject",
-              onPressed: () {
-                // Respond to button press
+      child: Scaffold(
+        body: Column(
+          children: [
+            // Header
+            Header(
+              backNav: false,
+              title: 'Projects',
+              minifab: FloatingActionButton(
+                heroTag: "gotoCreateProject",
+                onPressed: () {
+                  // Respond to button press
+                  // AuthenticationProvider().signOut();
+                  // Navigator.pushNamed(context, '/login');
 
-                Navigator.pushNamed(context, '/create');
-              },
-              // mini: true,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(16.0))),
-              child: Icon(Icons.add),
+                  Navigator.pushNamed(context, '/create');
+                },
+                // mini: true,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                child: Icon(Icons.add),
+              ),
             ),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          // Body
+            SizedBox(
+              height: 30,
+            ),
+            // Body
 
-          Expanded(
-              child: FutureBuilder<List<Project>>(
-                  future: fetchProjects(http.Client()),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) print(snapshot.error);
-                    return snapshot.hasData
-                        ? ProjectList(projects: snapshot.data)
-                        : Center(child: CircularProgressIndicator());
-                  })),
-        ],
+            Expanded(
+                child: FutureBuilder<List<Project>>(
+                    future: fetchProjects(http.Client()),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) print(snapshot.error);
+                      return snapshot.hasData
+                          ? ProjectList(projects: snapshot.data)
+                          : Center(child: CircularProgressIndicator());
+                    })),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          heroTag: "signout",
+          backgroundColor: Colors.red,
+          onPressed: () {
+            // Respond to button press
+            AuthenticationProvider().signOut().then((_) {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/login', (Route<dynamic> route) => false);
+            });
+          },
+          // mini: true,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(16.0))),
+          child: Icon(Icons.logout),
+        ),
       ),
-    ));
+    );
   }
 }
 

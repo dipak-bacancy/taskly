@@ -23,7 +23,7 @@ class _SplashState extends State<Splash> {
   }
 
   void navigationPage() {
-    Navigator.pushReplacementNamed(context, '/');
+    Navigator.pushReplacementNamed(context, '/login');
   }
 
   @override
