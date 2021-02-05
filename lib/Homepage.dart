@@ -1,6 +1,36 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import 'components/header.dart';
+import 'model/project.dart';
+
+Future<List<Project>> fetchProjects(http.Client client) async {
+  String token = "0d3d9c3c9a4599d3cef1b52404bfd276763cf602";
+  final response = await client.get(
+    'https://api.todoist.com/rest/v1/projects',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+  );
+  print(response);
+  print(response.body);
+
+  // Use the compute function to run parseProjects in a separate isolate.
+  return compute(parseProjects, response.body);
+}
+
+// A function that converts a response body into a List<Project>.
+List<Project> parseProjects(String responseBody) {
+  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+  return parsed.map<Project>((json) => Project.fromJson(json)).toList();
+}
 
 class Homepage extends StatelessWidget {
   const Homepage({Key key}) : super(key: key);
@@ -29,43 +59,54 @@ class Homepage extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 40,
+            height: 30,
           ),
           // Body
 
           Expanded(
-            child: GridView.builder(
-              itemCount: 4,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 3 / 2,
-              ),
-              itemBuilder: (BuildContext context, int index) {
-                return ProjectThumbnail(
-                  icon: Icon(Icons.favorite),
-                  letter: 'T',
-                  title: 'Inbox',
-                );
-              },
-            ),
-          ),
+              child: FutureBuilder<List<Project>>(
+                  future: fetchProjects(http.Client()),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) print(snapshot.error);
+                    return snapshot.hasData
+                        ? ProjectList(projects: snapshot.data)
+                        : Center(child: CircularProgressIndicator());
+                  })),
         ],
       ),
     ));
   }
 }
 
+class ProjectList extends StatelessWidget {
+  final List<Project> projects;
+
+  ProjectList({Key key, this.projects}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 3 / 2,
+          crossAxisSpacing: 10.0,
+          mainAxisSpacing: 40),
+      itemCount: projects.length,
+      itemBuilder: (context, index) {
+        return ProjectThumbnail(project: projects[index]);
+      },
+    );
+  }
+}
+
 class ProjectThumbnail extends StatelessWidget {
-  final Icon icon;
-  final String letter;
-  final String title;
-  ProjectThumbnail({this.icon, this.letter, this.title});
+  final Project project;
+  ProjectThumbnail({this.project});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        InkWell(
+        GestureDetector(
           onTap: () {
             Navigator.pushNamed(context, '/project');
           },
@@ -76,18 +117,20 @@ class ProjectThumbnail extends StatelessWidget {
             padding: EdgeInsets.all(8.0),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                color: Colors.grey[300]),
+                color: Colors.grey[500]),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Align(
                   alignment: Alignment.topLeft,
-                  child: icon,
+                  child: Icon(Icons.favorite,
+                      color:
+                          project.favorite == true ? Colors.red : Colors.white),
                 ),
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Text(
-                    letter,
+                    project.name[0],
                     style: TextStyle(fontSize: 25),
                   ),
                 )
@@ -97,7 +140,7 @@ class ProjectThumbnail extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: Text(title),
+          child: Text(project.name),
         )
       ],
     );
