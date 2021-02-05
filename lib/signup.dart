@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'model/authentication.dart';
 
-class Login extends StatelessWidget {
+class Signup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +18,7 @@ class Login extends StatelessWidget {
               height: 50,
             ),
             Text(
-              'Welcome back!',
+              'Welcome !',
               style: TextStyle(fontSize: 24),
             ),
 
@@ -29,59 +28,18 @@ class Login extends StatelessWidget {
 
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: LoginForm(),
+              child: SignupForm(),
             ),
-
-// signin with google
-            OutlineButton(
-              color: Colors.blue,
-              splashColor: Colors.grey,
-              onPressed: () {
-                // signin
-                AuthenticationProvider().signInWithGoogle().then((result) {
-                  if (result != null) {
-                    Navigator.pushReplacementNamed(context, '/');
-                  } else {
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text('error'),
-                    ));
-                  }
-                });
-              },
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40)),
-              child: Text('Login with google'),
-            ),
-
-// signin with facebook
-            // OutlineButton(
-            //   color: Colors.blue,
-            //   splashColor: Colors.grey,
-            //   onPressed: () {
-            //     // signin
-            //     AuthenticationProvider().signInWithGoogle().then((result) {
-            //       if (result != null) {
-            //         Navigator.pushReplacementNamed(context, '/');
-            //       } else {
-            //         Scaffold.of(context).showSnackBar(SnackBar(
-            //           content: Text('error'),
-            //         ));
-            //       }
-            //     });
-            //   },
-            //   shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(40)),
-            //   child: Text('Login with Facebook'),
-            // ),
 
             Row(
               children: <Widget>[
-                Text('New here', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Already here?',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/signup');
+                    Navigator.pop(context);
                   },
-                  child: Text('Get Registered Now!!',
+                  child: Text(' Get Logged in Now!',
                       style: TextStyle(fontSize: 20, color: Colors.blue)),
                 )
               ],
@@ -110,37 +68,42 @@ class Login extends StatelessWidget {
   }
 }
 
-class LoginForm extends StatefulWidget {
-  LoginForm({Key key}) : super(key: key);
+class SignupForm extends StatefulWidget {
+  SignupForm({Key key}) : super(key: key);
 
   @override
-  _LoginFormState createState() => _LoginFormState();
+  _SignupFormState createState() => _SignupFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _SignupFormState extends State<SignupForm> {
   final _formKey = GlobalKey<FormState>();
 
   String email;
   String password;
+  String name;
+
+  final pass = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    var border = OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        const Radius.circular(100.0),
+      ),
+    );
+
     return Form(
       key: _formKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
+          // email
           TextFormField(
             // initialValue: 'Input text',
             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.email_outlined),
-              labelText: 'Email',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  const Radius.circular(100.0),
-                ),
-              ),
-            ),
+                prefixIcon: Icon(Icons.email_outlined),
+                labelText: 'Email',
+                border: border),
             validator: (value) {
               if (value.isEmpty) {
                 return 'Please enter some text';
@@ -150,26 +113,62 @@ class _LoginFormState extends State<LoginForm> {
             onSaved: (val) {
               email = val;
             },
+            keyboardType: TextInputType.emailAddress,
           ),
-          SizedBox(
-            height: 20,
-          ),
+
+          // password
           TextFormField(
-            // initialValue: 'Input text',
+            controller: pass,
             decoration: InputDecoration(
               labelText: 'Password',
               prefixIcon: Icon(Icons.lock_outline),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  const Radius.circular(100.0),
-                ),
-              ),
+              border: border,
               suffixIcon: Icon(
                 Icons.visibility_off,
               ),
             ),
             onSaved: (val) {
               password = val;
+            },
+            obscureText: true,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            },
+          ),
+
+          // confirm passwords
+          TextFormField(
+            // initialValue: 'Input text',
+            decoration: InputDecoration(
+              labelText: 'Password',
+              prefixIcon: Icon(Icons.lock_outline),
+              border: border,
+              suffixIcon: Icon(
+                Icons.visibility_off,
+              ),
+            ),
+
+            obscureText: true,
+            validator: (value) {
+              if (value != pass.text) {
+                return 'password not match';
+              }
+              return null;
+            },
+          ),
+
+          // name
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'Full name',
+              prefixIcon: Icon(Icons.account_circle),
+              border: border,
+            ),
+            onSaved: (val) {
+              name = val;
             },
             validator: (value) {
               if (value.isEmpty) {
@@ -189,7 +188,7 @@ class _LoginFormState extends State<LoginForm> {
                 _formKey.currentState.save();
 
                 AuthenticationProvider()
-                    .signIn(email: email, password: password)
+                    .signUp(email: email, password: password)
                     .then((result) {
                   if (result == null) {
                     Navigator.pushReplacementNamed(context, '/');
@@ -208,7 +207,7 @@ class _LoginFormState extends State<LoginForm> {
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
             color: Colors.blue[400],
             textColor: Colors.white,
-            child: Text('Login'),
+            child: Text('Sign Up'),
           ),
         ],
       ),

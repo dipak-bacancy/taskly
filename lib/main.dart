@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:taskly/signup.dart';
 
 import 'package:taskly/splash.dart';
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         // '/': (context) => Splash(),
         '/': (context) => Homepage(),
         '/login': (context) => Login(),
+        '/signup': (context) => Signup(),
 
         '/create': (context) => CreateProject(),
         '/project': (context) => Project(),
