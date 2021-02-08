@@ -127,6 +127,8 @@ class _LoginFormState extends State<LoginForm> {
   String email;
   String password;
 
+  bool _obscureText = true;
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -171,11 +173,18 @@ class _LoginFormState extends State<LoginForm> {
                   const Radius.circular(100.0),
                 ),
               ),
-              suffixIcon: Icon(
-                Icons.visibility_off,
+              suffixIcon: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+                child: Icon(
+                  _obscureText ? Icons.visibility_off : Icons.visibility,
+                ),
               ),
             ),
-            obscureText: true,
+            obscureText: _obscureText,
             onSaved: (val) {
               password = val;
             },

@@ -84,6 +84,7 @@ class _SignupFormState extends State<SignupForm> {
   String email;
   String password;
   String name;
+  bool _obscureText = true;
 
   final pass = new TextEditingController();
 
@@ -129,8 +130,15 @@ class _SignupFormState extends State<SignupForm> {
               labelText: 'Password',
               prefixIcon: Icon(Icons.lock_outline),
               border: border,
-              suffixIcon: Icon(
-                Icons.visibility_off,
+              suffixIcon: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+                child: Icon(
+                  _obscureText ? Icons.visibility_off : Icons.visibility,
+                ),
               ),
             ),
             onSaved: (val) {
@@ -147,16 +155,11 @@ class _SignupFormState extends State<SignupForm> {
           space,
           // confirm passwords
           TextFormField(
-            // initialValue: 'Input text',
             decoration: InputDecoration(
-              labelText: 'Password',
+              labelText: 'Confirm Password',
               prefixIcon: Icon(Icons.lock_outline),
               border: border,
-              suffixIcon: Icon(
-                Icons.visibility_off,
-              ),
             ),
-
             obscureText: true,
             validator: (value) {
               if (value != pass.text) {
