@@ -1,3 +1,4 @@
+import 'package:auth_buttons/auth_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -35,10 +36,7 @@ class Login extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-// signin with google
-              OutlineButton(
-                color: Colors.blue,
-                splashColor: Colors.grey,
+              GoogleAuthButton(
                 onPressed: () {
                   // signin
                   AuthenticationProvider().signInWithGoogle().then((result) {
@@ -51,16 +49,12 @@ class Login extends StatelessWidget {
                     }
                   });
                 },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40)),
-                child: Text('SignIn with google'),
+                darkMode: true,
+                // style: AuthButtonStyle.secondary,
               ),
-// signin with facebook
-              OutlineButton(
-                color: Colors.blue,
-                splashColor: Colors.grey,
+              SizedBox(height: 5),
+              FacebookAuthButton(
                 onPressed: () {
-                  // signin
                   AuthenticationProvider().signInWithFacebook().then((result) {
                     if (result != null) {
                       Navigator.pushReplacementNamed(context, '/');
@@ -71,15 +65,14 @@ class Login extends StatelessWidget {
                     }
                   });
                 },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40)),
-                child: Text('SignIn with Facebook'),
+                darkMode: false,
               ),
-
+              SizedBox(height: 20),
               Row(
                 children: <Widget>[
                   Text('New here',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, '/signup');
