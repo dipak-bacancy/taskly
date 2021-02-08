@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'model/authentication.dart';
+
 class Splash extends StatefulWidget {
   @override
   _SplashState createState() => _SplashState();
@@ -10,9 +12,13 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   final splashDelay = 5;
 
+  var user;
+
   @override
   void initState() {
     super.initState();
+
+    user = AuthenticationProvider().user;
 
     _loadWidget();
   }
@@ -23,7 +29,9 @@ class _SplashState extends State<Splash> {
   }
 
   void navigationPage() {
-    Navigator.pushReplacementNamed(context, '/login');
+    user == null
+        ? Navigator.pushReplacementNamed(context, '/login')
+        : Navigator.pushReplacementNamed(context, '/');
   }
 
   @override
