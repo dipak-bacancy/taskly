@@ -86,6 +86,8 @@ class _SignupFormState extends State<SignupForm> {
   String name;
   bool _obscureText = true;
 
+  bool agree = false;
+
   final pass = new TextEditingController();
 
   @override
@@ -186,6 +188,25 @@ class _SignupFormState extends State<SignupForm> {
               return null;
             },
           ),
+
+          Row(
+            children: <Widget>[
+              Checkbox(
+                onChanged: (_) {
+                  setState(() {
+                    agree = !agree;
+                  });
+                },
+                value: agree,
+              ),
+              Flexible(
+                child: Text(
+                    'By creating account, I agree to Terms & Conditions and Privacy Policy.'),
+              ),
+            ],
+          ),
+
+          // signUP button
           RaisedButton(
             onPressed: () {
               // Respond to button press
@@ -193,6 +214,14 @@ class _SignupFormState extends State<SignupForm> {
               if (_formKey.currentState.validate()) {
                 // If the form is valid, display a snackbar. In the real world,
                 // you'd often call a server or save the information in a database.
+
+                if (!agree) {
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                          'please agree terms & condition and privacy policy')));
+
+                  return false;
+                }
 
                 _formKey.currentState.save();
 
