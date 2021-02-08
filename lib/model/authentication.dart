@@ -20,7 +20,7 @@ class AuthenticationProvider {
     }
   }
 
-  //SIGN IN METHOD
+  //SIGN IN METHODJ
   Future<String> signIn({String email, String password}) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -79,6 +79,8 @@ class AuthenticationProvider {
   //SIGN OUT METHOD
   Future<void> signOut() async {
     await GoogleSignIn().signOut();
+
+    await FacebookAuth.instance.logOut();
 
     await _auth.signOut();
 
