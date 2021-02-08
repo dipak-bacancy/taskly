@@ -53,7 +53,27 @@ class Login extends StatelessWidget {
                 },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
-                child: Text('Login with google'),
+                child: Text('SignIn with google'),
+              ),
+// signin with facebook
+              OutlineButton(
+                color: Colors.blue,
+                splashColor: Colors.grey,
+                onPressed: () {
+                  // signin
+                  AuthenticationProvider().signInWithFacebook().then((result) {
+                    if (result != null) {
+                      Navigator.pushReplacementNamed(context, '/');
+                    } else {
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Text('error'),
+                      ));
+                    }
+                  });
+                },
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40)),
+                child: Text('SignIn with Facebook'),
               ),
 
               Row(

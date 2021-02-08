@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class AuthenticationProvider {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -55,6 +56,26 @@ class AuthenticationProvider {
     // Once signed in, return the UserCredential
   }
 
+  Future<User> signInWithFacebook() async {
+    // Trigger the sign-in flow
+
+    try {
+      AccessToken accessToken = await FacebookAuth.instance.login();
+
+      // Create a credential from the access token
+      final FacebookAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(accessToken.token);
+
+      final UserCredential authResult =
+          await _auth.signInWithCredential(facebookAuthCredential);
+
+      return authResult.user;
+    } on FacebookAuthException catch (e) {
+      print(e.message);
+      return null;
+    }
+  }
+
   //SIGN OUT METHOD
   Future<void> signOut() async {
     await GoogleSignIn().signOut();
@@ -64,3 +85,7 @@ class AuthenticationProvider {
     print('signout');
   }
 }
+
+/* 
+    Facebook key hash  :      4juqxR/bfCEhOEDslBTwAePpz74=
+ */
