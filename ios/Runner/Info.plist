@@ -62,5 +62,23 @@
 
 
 
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+  <key>CFBundleURLSchemes</key>
+  <array>
+    <string>fb5143012392435755</string>
+  </array>
+  </dict>
+</array>
+<key>FacebookAppID</key>
+<string>5143012392435755</string>
+<key>FacebookDisplayName</key>
+<string>taskly</string>
+
+
+
+
+
 </dict>
 </plist>
