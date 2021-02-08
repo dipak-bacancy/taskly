@@ -7,87 +7,71 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          // mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            // logo
-            buildLogo(),
-            SizedBox(
-              height: 50,
-            ),
-            Text(
-              'Welcome back!',
-              style: TextStyle(fontSize: 24),
-            ),
+      body: ListView(
+        padding: EdgeInsets.all(8.0),
+        children: <Widget>[
+          SizedBox(height: 80),
+          // logo
+          Column(
+            children: [
+              buildLogo(),
+              SizedBox(height: 50),
+              Text(
+                'Welcome back!',
+                style: TextStyle(fontSize: 24),
+              ),
+            ],
+          ),
 
-            SizedBox(
-              height: 50,
-            ),
+          SizedBox(
+            height: 50,
+          ),
 
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: LoginForm(),
-            ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: LoginForm(),
+          ),
 
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
 // signin with google
-            OutlineButton(
-              color: Colors.blue,
-              splashColor: Colors.grey,
-              onPressed: () {
-                // signin
-                AuthenticationProvider().signInWithGoogle().then((result) {
-                  if (result != null) {
-                    Navigator.pushReplacementNamed(context, '/');
-                  } else {
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text('error'),
-                    ));
-                  }
-                });
-              },
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40)),
-              child: Text('Login with google'),
-            ),
+              OutlineButton(
+                color: Colors.blue,
+                splashColor: Colors.grey,
+                onPressed: () {
+                  // signin
+                  AuthenticationProvider().signInWithGoogle().then((result) {
+                    if (result != null) {
+                      Navigator.pushReplacementNamed(context, '/');
+                    } else {
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Text('error'),
+                      ));
+                    }
+                  });
+                },
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40)),
+                child: Text('Login with google'),
+              ),
 
-// signin with facebook
-            // OutlineButton(
-            //   color: Colors.blue,
-            //   splashColor: Colors.grey,
-            //   onPressed: () {
-            //     // signin
-            //     AuthenticationProvider().signInWithGoogle().then((result) {
-            //       if (result != null) {
-            //         Navigator.pushReplacementNamed(context, '/');
-            //       } else {
-            //         Scaffold.of(context).showSnackBar(SnackBar(
-            //           content: Text('error'),
-            //         ));
-            //       }
-            //     });
-            //   },
-            //   shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(40)),
-            //   child: Text('Login with Facebook'),
-            // ),
-
-            Row(
-              children: <Widget>[
-                Text('New here', style: TextStyle(fontWeight: FontWeight.bold)),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/signup');
-                  },
-                  child: Text('Get Registered Now!!',
-                      style: TextStyle(fontSize: 20, color: Colors.blue)),
-                )
-              ],
-            )
-          ],
-        ),
+              Row(
+                children: <Widget>[
+                  Text('New here',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/signup');
+                    },
+                    child: Text('Get Registered Now!!',
+                        style: TextStyle(fontSize: 20, color: Colors.blue)),
+                  )
+                ],
+              )
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -130,6 +114,7 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
+          // email
           TextFormField(
             // initialValue: 'Input text',
             decoration: InputDecoration(
@@ -154,6 +139,8 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(
             height: 20,
           ),
+
+          // password
           TextFormField(
             // initialValue: 'Input text',
             decoration: InputDecoration(
@@ -168,6 +155,7 @@ class _LoginFormState extends State<LoginForm> {
                 Icons.visibility_off,
               ),
             ),
+            obscureText: true,
             onSaved: (val) {
               password = val;
             },
@@ -178,37 +166,47 @@ class _LoginFormState extends State<LoginForm> {
               return null;
             },
           ),
-          RaisedButton(
-            onPressed: () {
-              // Respond to button press
 
-              if (_formKey.currentState.validate()) {
-                // If the form is valid, display a snackbar. In the real world,
-                // you'd often call a server or save the information in a database.
+          SizedBox(height: 10),
 
-                _formKey.currentState.save();
+          SizedBox(
+            height: 54,
+            width: 184,
+            child: RaisedButton(
+              onPressed: () {
+                // Respond to button press
 
-                AuthenticationProvider()
-                    .signIn(email: email, password: password)
-                    .then((result) {
-                  if (result == null) {
-                    Navigator.pushReplacementNamed(context, '/');
-                  } else {
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text(
-                        result,
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ));
-                  }
-                });
-              }
-            },
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8.0))),
-            color: Colors.blue[400],
-            textColor: Colors.white,
-            child: Text('Login'),
+                if (_formKey.currentState.validate()) {
+                  // If the form is valid, display a snackbar. In the real world,
+                  // you'd often call a server or save the information in a database.
+
+                  _formKey.currentState.save();
+
+                  AuthenticationProvider()
+                      .signIn(email: email, password: password)
+                      .then((result) {
+                    if (result == null) {
+                      Navigator.pushReplacementNamed(context, '/');
+                    } else {
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                          result,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ));
+                    }
+                  });
+                }
+              },
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(24.0))),
+              color: Colors.blue[400],
+              textColor: Colors.white,
+              child: Text(
+                'Login',
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
           ),
         ],
       ),

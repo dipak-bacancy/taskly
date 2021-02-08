@@ -6,46 +6,49 @@ class Signup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          // mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            // logo
-            buildLogo(),
-            SizedBox(
-              height: 50,
-            ),
-            Text(
-              'Welcome !',
-              style: TextStyle(fontSize: 24),
-            ),
+      body: ListView(
+        padding: EdgeInsets.all(16.0),
+        children: <Widget>[
+          SizedBox(height: 80),
+          // logo
+          Column(
+            children: [
+              buildLogo(),
+            ],
+          ),
+          SizedBox(height: 50),
+          Text(
+            'Welcome!',
+            style: TextStyle(fontSize: 24),
+          ),
 
-            SizedBox(
-              height: 50,
-            ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SignupForm(),
+          ),
 
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SignupForm(),
-            ),
-
-            Row(
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Text('Already here?',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(' Get Logged in Now!',
-                      style: TextStyle(fontSize: 20, color: Colors.blue)),
+                Row(
+                  children: <Widget>[
+                    Text('Already here  ?',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20)),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(' Get Logged in Now!',
+                          style: TextStyle(fontSize: 20, color: Colors.blue)),
+                    )
+                  ],
                 )
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -92,6 +95,7 @@ class _SignupFormState extends State<SignupForm> {
       ),
     );
 
+    var space = SizedBox(height: 10);
     return Form(
       key: _formKey,
       child: Column(
@@ -116,6 +120,8 @@ class _SignupFormState extends State<SignupForm> {
             keyboardType: TextInputType.emailAddress,
           ),
 
+          space,
+
           // password
           TextFormField(
             controller: pass,
@@ -138,7 +144,7 @@ class _SignupFormState extends State<SignupForm> {
               return null;
             },
           ),
-
+          space,
           // confirm passwords
           TextFormField(
             // initialValue: 'Input text',
@@ -159,7 +165,7 @@ class _SignupFormState extends State<SignupForm> {
               return null;
             },
           ),
-
+          space,
           // name
           TextFormField(
             decoration: InputDecoration(
