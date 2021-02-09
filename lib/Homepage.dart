@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:taskly/model/authentication.dart';
+import 'package:taskly/src/repository.dart';
 
 import 'bloc/projectlist_bloc.dart';
 import 'components/header.dart';
@@ -41,7 +42,11 @@ class Homepage extends StatelessWidget {
             // Body
 
             Expanded(
-              child: ProjectListing(),
+              child: BlocProvider(
+                create: (context) =>
+                    ProjectlistBloc(projectRepository: ProjectRepository()),
+                child: ProjectListing(),
+              ),
             ),
           ],
         ),
@@ -74,8 +79,10 @@ class _ProjectListingState extends State<ProjectListing> {
   @override
   void initState() {
     super.initState();
-    // _loadProjects();
+    _loadProjects();
+  }
 
+  void _loadProjects() {
     context.bloc<ProjectlistBloc>().add(FetchProjects());
   }
 
@@ -83,13 +90,13 @@ class _ProjectListingState extends State<ProjectListing> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProjectlistBloc, ProjectlistState>(
       builder: (context, state) {
-        if (state is ProjectlistError) {
-          return Center(child: Text(state.error));
-        }
-
         if (state is ProjectlistLoaded) {
           return ProjectList(projects: state.projects);
         }
+        if (state is ProjectlistError) {
+          return Center(child: Text('error'));
+        }
+
         return Center(child: CircularProgressIndicator());
       },
     );

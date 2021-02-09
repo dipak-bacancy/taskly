@@ -18,7 +18,7 @@ class ProjectApiProvider {
         'Authorization': 'Bearer $token',
       },
     );
-
+    print(response.body);
     // Use the compute function to run parseProjects in a separate isolate.
     return compute(parseProjects, response.body);
   }
