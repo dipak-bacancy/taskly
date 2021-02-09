@@ -32,6 +32,7 @@ dependencies:
   flutter_material_color_picker: ^1.0.5
   google_sign_in: ^4.5.3
   http: ^0.12.2
+  rxdart: ^0.25.0
 
 dev_dependencies:
   flutter_test:

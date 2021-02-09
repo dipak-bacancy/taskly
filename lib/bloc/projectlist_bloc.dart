@@ -9,9 +9,9 @@ part 'projectlist_event.dart';
 part 'projectlist_state.dart';
 
 class ProjectlistBloc extends Bloc<ProjectlistEvent, ProjectlistState> {
-  final ProjectRepository projectRepository;
+  final _repository = ProjectRepository();
 
-  ProjectlistBloc({this.projectRepository}) : super(ProjectlistInitial());
+  ProjectlistBloc() : super(ProjectlistInitial());
 
   @override
   Stream<ProjectlistState> mapEventToState(
@@ -23,12 +23,12 @@ class ProjectlistBloc extends Bloc<ProjectlistEvent, ProjectlistState> {
 
     try {
       if (event is FetchProjects) {
-        projects = await projectRepository.fetchProjects();
+        projects = await _repository.fetchProjects();
 
         yield ProjectlistLoaded(projects: projects);
       }
     } catch (e) {
-      yield ProjectlistError(error: e);
+      yield ProjectlistError(error: e.toString());
     }
     // TODO: implement mapEventToState
   }

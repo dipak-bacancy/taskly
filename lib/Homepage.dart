@@ -43,8 +43,7 @@ class Homepage extends StatelessWidget {
 
             Expanded(
               child: BlocProvider(
-                create: (context) =>
-                    ProjectlistBloc(projectRepository: ProjectRepository()),
+                create: (context) => ProjectlistBloc(),
                 child: ProjectListing(),
               ),
             ),
@@ -83,18 +82,21 @@ class _ProjectListingState extends State<ProjectListing> {
   }
 
   void _loadProjects() {
-    context.bloc<ProjectlistBloc>().add(FetchProjects());
+    context.read<ProjectlistBloc>().add(FetchProjects());
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProjectlistBloc, ProjectlistState>(
       builder: (context, state) {
+        if (state is ProjectlistLoading) {
+          return Center(child: CircularProgressIndicator());
+        }
         if (state is ProjectlistLoaded) {
           return ProjectList(projects: state.projects);
         }
         if (state is ProjectlistError) {
-          return Center(child: Text('error'));
+          return Center(child: Text(state.error));
         }
 
         return Center(child: CircularProgressIndicator());
