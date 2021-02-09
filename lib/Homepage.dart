@@ -50,8 +50,6 @@ class Homepage extends StatelessWidget {
                 heroTag: "gotoCreateProject",
                 onPressed: () {
                   // Respond to button press
-                  // AuthenticationProvider().signOut();
-                  // Navigator.pushNamed(context, '/login');
 
                   Navigator.pushNamed(context, '/create');
                 },
@@ -61,9 +59,7 @@ class Homepage extends StatelessWidget {
                 child: Icon(Icons.add),
               ),
             ),
-            SizedBox(
-              height: 30,
-            ),
+            SizedBox(height: 30),
             // Body
 
             Expanded(

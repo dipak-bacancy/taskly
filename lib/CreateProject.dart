@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'components/header.dart';
 
 class CreateProject extends StatelessWidget {
@@ -90,7 +90,55 @@ class CreateProject extends StatelessWidget {
   }
 }
 
-class CreateProjectBody extends StatelessWidget {
+class CreateProjectBody extends StatefulWidget {
+  @override
+  _CreateProjectBodyState createState() => _CreateProjectBodyState();
+}
+
+class _CreateProjectBodyState extends State<CreateProjectBody> {
+  Color _tempMainColor;
+
+  Color _mainColor = Colors.blue;
+
+  bool _favorite = false;
+
+  void _openDialog(String title, Widget content) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.all(6.0),
+          title: Text(title),
+          content: content,
+          actions: [
+            FlatButton(
+              child: Text('CANCEL'),
+              onPressed: Navigator.of(context).pop,
+            ),
+            FlatButton(
+              child: Text('SUBMIT'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() => _mainColor = _tempMainColor);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _openMainColorPicker() async {
+    _openDialog(
+      "Main Color picker",
+      MaterialColorPicker(
+        selectedColor: _mainColor,
+        allowShades: false,
+        onMainColorChange: (color) => setState(() => _tempMainColor = color),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -131,10 +179,15 @@ class CreateProjectBody extends StatelessWidget {
               SizedBox(
                 width: 40,
               ),
-              Switch(
-                value: false,
-                onChanged: null,
-              ),
+              GestureDetector(
+                onTap: () {
+                  _openMainColorPicker();
+                },
+                child: CircleAvatar(
+                  backgroundColor: _mainColor,
+                  radius: 15.0,
+                ),
+              )
             ],
           ),
 
@@ -150,8 +203,8 @@ class CreateProjectBody extends StatelessWidget {
                 width: 40,
               ),
               Switch(
-                value: false,
-                onChanged: null,
+                value: _favorite,
+                onChanged: (val) => setState(() => _favorite = val),
               ),
             ],
           ),
