@@ -26,16 +26,16 @@ class MyApp extends StatelessWidget {
       title: 'taskly',
       initialRoute: '/splash',
       routes: {
-        '/splash': (context) => Splash(),
+        '/splash': (context) => Homepage(),
         // '/': (context) => Splash(),
-        '/': (context) => Homepage(),
-        '/login': (context) => Login(),
-        '/signup': (context) => Signup(),
+        // '/': (context) => Homepage(),
+        // '/login': (context) => Login(),
+        // '/signup': (context) => Signup(),
 
-        '/create': (context) => CreateProject(),
-        '/project': (context) => Project(),
-        '/task-completed': (context) => TaskDetail(),
-        '/task': (context) => Task(),
+        // '/create': (context) => CreateProject(),
+        // '/project': (context) => Project(),
+        // '/task-completed': (context) => TaskDetail(),
+        // '/task': (context) => Task(),
       },
     );
   }

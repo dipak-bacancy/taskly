@@ -2,36 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:taskly/model/authentication.dart';
 
+import 'bloc/projectlist_bloc.dart';
 import 'components/header.dart';
 
 import 'model/project.dart';
-
-Future<List<Project>> fetchProjects(http.Client client) async {
-  String token = "0d3d9c3c9a4599d3cef1b52404bfd276763cf602";
-  final response = await client.get(
-    'https://api.todoist.com/rest/v1/projects',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    },
-  );
-  // print(response);
-  // print(response.body);
-
-  // Use the compute function to run parseProjects in a separate isolate.
-  return compute(parseProjects, response.body);
-}
-
-// A function that converts a response body into a List<Project>.
-List<Project> parseProjects(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-
-  return parsed.map<Project>((json) => Project.fromJson(json)).toList();
-}
 
 class Homepage extends StatelessWidget {
   // const Homepage({Key key}) : super(key: key);
@@ -63,14 +41,8 @@ class Homepage extends StatelessWidget {
             // Body
 
             Expanded(
-                child: FutureBuilder<List<Project>>(
-                    future: fetchProjects(http.Client()),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) print(snapshot.error);
-                      return snapshot.hasData
-                          ? ProjectList(projects: snapshot.data)
-                          : Center(child: CircularProgressIndicator());
-                    })),
+              child: ProjectListing(),
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -89,6 +61,37 @@ class Homepage extends StatelessWidget {
           child: Icon(Icons.logout),
         ),
       ),
+    );
+  }
+}
+
+class ProjectListing extends StatefulWidget {
+  @override
+  _ProjectListingState createState() => _ProjectListingState();
+}
+
+class _ProjectListingState extends State<ProjectListing> {
+  @override
+  void initState() {
+    super.initState();
+    // _loadProjects();
+
+    context.bloc<ProjectlistBloc>().add(FetchProjects());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProjectlistBloc, ProjectlistState>(
+      builder: (context, state) {
+        if (state is ProjectlistError) {
+          return Center(child: Text(state.error));
+        }
+
+        if (state is ProjectlistLoaded) {
+          return ProjectList(projects: state.projects);
+        }
+        return Center(child: CircularProgressIndicator());
+      },
     );
   }
 }
