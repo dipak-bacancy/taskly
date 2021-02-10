@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:taskly/signup.dart';
 
 import 'package:taskly/splash.dart';
+import 'package:taskly/sliverpage.dart';
 
 import 'package:taskly/tasks.dart';
 
@@ -24,8 +25,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'taskly',
-      initialRoute: '/splash',
+      initialRoute: '/sliver',
       routes: {
+        '/sliver': (context) => Sliverpage(),
+
         '/splash': (context) => Splash(),
         // '/': (context) => Splash(),
         '/': (context) => Homepage(),
